@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
@@ -27,24 +28,30 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 	GridPane grid;
 	BorderPane root;
 	private ComboBox<Integer> choices;
-	int selection=4;
+	int selection=5;
 	Stage stage;
-	private Node node;
+	private Label output;
+	QuorModel game;
 	
 	public void start(Stage primaryStage) {
 		try {
+			game=new QuorModel(selection);
 			stage=primaryStage;
 			buttons= new Button[(selection*2)-1][(selection*2)-1];
+			output=new Label();
+			output.setText("Red's turn");
 			root = new BorderPane();
 			grid = new GridPane();
 			choices = new ComboBox<Integer>();
-			choices.getItems().addAll(3, 4, 5, 6, 7, 8, 9, 10);
+			choices.getItems().addAll(3, 5, 7, 9, 11);
 			choices.setOnAction(this);
+			choices.setValue(selection);
 			int screenSize=(selection*50)+((selection-1)*10);
 			//makes the screen size based on barriers being 50x10 and spaces being 50x50 pixesl
 			scene = new Scene(root,screenSize,screenSize);
 			root.setCenter(grid);
 			root.setTop(choices);
+			root.setBottom(output);
 			int yVal=0;
 			for(int i=0;i<(selection*2)-1;i+=1) {
 				int xVal=0;
@@ -87,12 +94,15 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 				grid.add(buttons[i][j], xVal, yVal);
 				xVal+=x;
 				}
+				
 				if(i%2==0) {
 					yVal+=50;
 				}else {
 					yVal+=10;
 				}
 			}
+			buttons[0][buttons.length/2].setStyle("-fx-border-color: black; -fx-color: red;");
+			buttons[buttons.length-1][buttons.length/2].setStyle("-fx-border-color: black; -fx-color: blue;");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

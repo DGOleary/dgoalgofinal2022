@@ -1,6 +1,8 @@
 package aircondition;
 
 import java.util.LinkedList;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class QuorModel {
 
@@ -8,11 +10,16 @@ public class QuorModel {
 	Quor[][] board;
 	int[] p1= new int[2];
 	int[] p2= new int[2];
+	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
 	boolean player; //player 1/true's goal is the top layer, player 2/false's goal is the bottom
 	
 	public QuorModel(int n) {
 		size=n;
+		p1[0]=0;
+		p1[1]=size/2;
+		p1[0]=size-1;
+		p1[1]=size/2;
 		board = new Quor[n][n];
 		for(int i=0;i<n;i++) {
 			for(int j=0;j<n;j++) {
@@ -23,11 +30,11 @@ public class QuorModel {
 			for(int j=0;j<n;j++) {
 				if(j<n-1) {
 				board[i][j].add(board[i][j+1]);
-				System.out.println(i+" "+j+" , "+i+" "+(j+1));
+				//System.out.println(i+" "+j+" , "+i+" "+(j+1));
 				}
 				if(i<n-1) {
 					board[i][j].add(board[i+1][j]);
-					System.out.println(i+" "+j+" , "+(i+1)+" "+j);
+					//System.out.println(i+" "+j+" , "+(i+1)+" "+j);
 				}
 			}
 		}
@@ -156,8 +163,14 @@ public class QuorModel {
 	return false;
 	}
 
-	
-	
+	  public void addPropertyChangeListener(PropertyChangeListener listener) {
+	        this.pcs.addPropertyChangeListener(listener);
+	    }
+	  
+	  public void removePropertyChangeListener(PropertyChangeListener listener) {
+	        this.pcs.removePropertyChangeListener(listener);
+	    }
+	  
 	public static void main(String[] args) {
 		QuorModel q = new QuorModel(4);
 		int t=0;
