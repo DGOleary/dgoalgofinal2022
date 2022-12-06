@@ -6,13 +6,13 @@ import java.beans.PropertyChangeSupport;
 
 public class QuorModel {
 
-	int size;
-	Quor[][] board;
-	int[] p1= new int[2];
-	int[] p2= new int[2];
+	private int size;
+	private Quor[][] board;
+	private int[] p1= new int[2];
+	private int[] p2= new int[2];
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	boolean player; //player 1/true's goal is the top layer, player 2/false's goal is the bottom
+	private boolean player; //player 1/true's goal is the top layer, player 2/false's goal is the bottom
 	
 	public QuorModel(int n) {
 		size=n;
