@@ -1,21 +1,21 @@
 package aircondition;
 
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.HashSet;
 
 public class Quor {
 	int x, y;
-	LinkedList<Quor> adj;
+	HashSet<Quor> adj;
 
-	Quor(int x, int y) {
+	public Quor(int x, int y) {
 		this.x = x;
 		this.y = y;
-		adj = new LinkedList<Quor>();
+		adj = new HashSet<Quor>();
 	}
 
 	void add(Quor q) {
 		adj.add(q);
-		q.add(this);
+		q.adj.add(this);
 	}
 
 	public boolean equals(int x, int y) {
