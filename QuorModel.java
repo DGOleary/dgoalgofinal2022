@@ -1,6 +1,5 @@
 package aircondition;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 
 public class QuorModel {
@@ -105,10 +104,58 @@ public class QuorModel {
 
 	}
 	
-	boolean player() {
+	public boolean player() {
 		return player;
 	}
 	
+	public boolean moveCheck(int x, int y, int px, int py) {
+	if((Math.abs(px-x)==1 && py==y)|| (Math.abs(py-y)==1 && px==x)){
+	if(!board[x][y].contains(px, py)){
+			return false;
+	}	
+	player=!player;
+	if(x==0 && player){
+		return true;
+	//this.pcs.firePropertyChange("p1 win", null, true);
+	}else if(x==board.length-1 && !player){
+	return true;
+	//this.pcs.firePropertyChange("p2 win", null, true);
+	}
+	//this.pcs.firePropertyChange("move", null, true);
+	if(player){
+			p1[0]=px;
+			p1[1]=py;
+	}else
+			p2[0]=px;
+			p2[1]=py;
+	}
+	return true;
+	}
+	
+	public boolean move(int x, int y) {
+		int px, py, p2x, p2y;
+		if(player){
+			px=p1[0];
+			py=p1[1];
+			p2x=p2[0];
+			p2y=p2[1];
+		}else {
+			px=p2[0];
+			py=p2[1];
+			p2x=p1[0];
+			p2y=p1[1];
+		}
+	if((Math.abs(px-p2x)==1 && py==p2y) || (Math.abs(py-p2y)==1 && px==p2x)){
+		px=p2x;
+			py=p2y;
+		moveCheck(x, y, px, py);
+		}
+	if((Math.abs(px-x)==1 && py==y)|| (Math.abs(py-y)==1 && px==x)){
+		moveCheck(x, y, px, py);
+	}
+	return false;
+	}
+
 	
 	
 	public static void main(String[] args) {
