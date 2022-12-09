@@ -25,8 +25,10 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 	
 	Scene scene;
 	Button[][] buttons;
+	Button clear;
 	GridPane grid;
 	BorderPane root;
+	BorderPane top;
 	private ComboBox<Integer> choices;
 	int selection=5;
 	Stage stage;
@@ -46,10 +48,14 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 		game=new QuorModel(selection);
 		game.addPropertyChangeListener(this);
 		won=false;
+		top=new BorderPane();
 		stage=primaryStage;
 		buttons= new Button[(selection*2)-1][(selection*2)-1];
 		output=new Label();
 		output.setText("Red's turn");
+		clear=new Button();
+		clear.setText("Reset");
+		clear.setOnAction(this);
 		root = new BorderPane();
 		grid = new GridPane();
 		choices = new ComboBox<Integer>();
@@ -60,7 +66,9 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 		//makes the screen size based on barriers being 50x10 and spaces being 50x50 pixels
 		scene = new Scene(root,screenSize,screenSize);
 		root.setCenter(grid);
-		root.setTop(choices);
+		top.setLeft(choices);
+		top.setRight(clear);
+		root.setTop(top);
 		root.setBottom(output);
 		int yVal=0;
 		for(int i=0;i<(selection*2)-1;i+=1) {
@@ -93,14 +101,21 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 							}
 							//handles the movement of the players
 						}else if((fi % 2 == 0 && fj % 2 == 1) || (fi % 2 == 1 && fj % 2 == 0)){
-							System.out.print("barrier ");
+							//System.out.print("barrier ");
 							if(fi % 2 == 0){
-								if(game.createBarrier((fi-1)/2, fj/2, 'r')) {
-									
+								//System.out.println("right "+" "+fi/2+" "+fj/2);
+								if(game.createBarrier(fi/2, fj/2, 'r')) {
+									buttons[fi][fj].setStyle("-fx-border-color: black; -fx-background-color: darkred;");
+								
+								//System.out.println("right");
 								}
-								System.out.println("right");
 						}else{
-							System.out.println("down");
+							//System.out.println("right "+" "+fi/2+" "+fj/2);
+							if(game.createBarrier(fi/2, fj/2, 'd')) {
+								buttons[fi][fj].setStyle("-fx-border-color: black; -fx-background-color: darkred;");
+							
+							//System.out.println("down");
+							}
 						}
 						//if (checkPath(i, j,d)){
 							//button(i, j) = "red";

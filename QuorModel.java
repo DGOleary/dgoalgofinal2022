@@ -76,12 +76,14 @@ public class QuorModel {
 	}
 
 	public boolean createBarrier(int x, int y, char d) {
+		//System.out.println("barrier func "+x+" "+y);
 		Quor temp=board[x][y];
 		Quor temp2;
 		if(d=='d') {
 			if(!temp.contains(x+1, y)){
 				return false;
 		}
+			//System.out.println("barrier func2 "+(x+1)+" "+y);
 		temp2=board[x+1][y];
 			board[x][y].remove(temp.x+1, temp.y);
 
@@ -89,6 +91,7 @@ public class QuorModel {
 			if(!temp.contains(x, y+1)){
 				return false;
 		}
+			//System.out.println("barrier func2 "+x+" "+(y+1));
 			temp2=board[x][y+1];
 			board[x][y].remove(temp.x, temp.y+1);
 
@@ -96,15 +99,17 @@ public class QuorModel {
 		
 		if(checkPath(!player)){
 			player=!player;
-			//this.pcs.firePropertyChange("barrier", null, true);
+			this.pcs.firePropertyChange("move", null, player);
+			//System.out.println("cut ");
 			return true;
 			}else{
-			board[x][y]=temp;
-			if(d=='d'){
-			board[x+1][y]=temp2;
-			} else{
-				board[x][y+1]=temp2;
-			}
+			//board[x][y]=temp;
+			temp.add(temp2);
+			//if(d=='d'){
+			//board[x+1][y]=temp2;
+			//} else{
+			//	board[x][y+1]=temp2;
+			//}
 			return false;
 
 			}
@@ -147,6 +152,9 @@ public class QuorModel {
 	}
 	
 	public boolean move(int x, int y) {
+		if((x==p1[0]&&y==p1[1])||(x==p2[0]&&y==p2[1])) {
+			return false;
+		}
 		//System.out.println("player "+player);
 		int px, py, p2x, p2y;
 		if(player){
