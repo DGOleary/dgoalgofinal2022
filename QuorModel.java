@@ -207,30 +207,4 @@ public class QuorModel {
 	  public int getp2Y() {
 		  return p2[1];
 	  }
-	  
-	public static void main(String[] args) {
-		QuorModel q = new QuorModel(4);
-		int t=0;
-		
-		q.board[2][0].remove(1,0);
-		q.board[2][1].remove(1,1);
-		q.board[2][2].remove(1,2);
-		//q.board[2][3].remove(1,3);
-		System.out.println(q.board[2][0].contains(1, 0));
-		System.out.println(q.board[1][0].contains(2, 0));
-		
-		//for(Quor r: q.board[2]) {
-		//	r.remove(t, 1);
-		//	t++;
-		//}
-		q.p1[0]=3;
-		q.p2[0]=0;
-		System.out.println(q.createBarrier(1,2,'r'));
-		//q.board[1][0].remove(0,0);
-		//q.board[1][1].remove(0,1);
-		//System.out.println(q.board[1][0].contains(0, 0));
-		//System.out.println(q.board[1][1].contains(0, 1));
-		//System.out.println(q.checkPath(true));
-		//System.out.println(q.checkPath(false));
-	}
 }

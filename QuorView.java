@@ -4,13 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javafx.application.Application;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -21,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 public class QuorView extends Application
-implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<String> {
+implements PropertyChangeListener, EventHandler<ActionEvent> {
 	
 	Scene scene;
 	Button[][] buttons;
@@ -169,11 +164,6 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 	}
 	public static void main(String[] args) {
 		launch(args);
-	}
-
-	@Override
-	public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-
 	}
 
 	@Override
