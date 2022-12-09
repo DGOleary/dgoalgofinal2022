@@ -12,14 +12,14 @@ public class QuorModel {
 	private int[] p2= new int[2];
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	private boolean player; //player 1/true's goal is the top layer, player 2/false's goal is the bottom
+	private boolean player=true; //player 1/red/true's goal is the bottom layer, player 2/blue/false's goal is the top
 	
 	public QuorModel(int n) {
 		size=n;
 		p1[0]=0;
 		p1[1]=size/2;
-		p1[0]=size-1;
-		p1[1]=size/2;
+		p2[0]=size-1;
+		p2[1]=size/2;
 		board = new Quor[n][n];
 		for(int i=0;i<n;i++) {
 			for(int j=0;j<n;j++) {
@@ -41,7 +41,7 @@ public class QuorModel {
 		//creates connections between all adjacent quors
 	}
 	
-	boolean checkPath(boolean p) {
+	private boolean checkPath(boolean p) {
 		int x,y;
 		if(p){
 			x=p1[0];
@@ -61,9 +61,9 @@ public class QuorModel {
 					visit[temp.x][temp.y]=true;
 				}
 				//p is the player who is being checked for having a path to victory
-				if(temp.x==0 && p) {
+				if(temp.x==0 && !p) {
 					return true;
-				}else if(temp.x==size-1 && !p) {
+				}else if(temp.x==size-1 && p) {
 					return true;
 				}
 				for(Quor q: temp.adj) {
@@ -115,31 +115,36 @@ public class QuorModel {
 		return player;
 	}
 	
-	public boolean moveCheck(int x, int y, int px, int py) {
-	if((Math.abs(px-x)==1 && py==y)|| (Math.abs(py-y)==1 && px==x)){
+	
+	private boolean moveCheck(int x, int y, int px, int py) {
+	
 	if(!board[x][y].contains(px, py)){
 			return false;
 	}	
-	player=!player;
-	if(x==0 && player){
+	
+	if(x==0 && !player){
 		return true;
 	//this.pcs.firePropertyChange("p1 win", null, true);
-	}else if(x==board.length-1 && !player){
+	}else if(x==board.length-1 && player){
 	return true;
 	//this.pcs.firePropertyChange("p2 win", null, true);
 	}
 	//this.pcs.firePropertyChange("move", null, true);
 	if(player){
-			p1[0]=px;
-			p1[1]=py;
-	}else
-			p2[0]=px;
-			p2[1]=py;
+			p1[0]=x;
+			p1[1]=y;
+			System.out.println("p1 "+x+" "+y);
+	}else {
+			p2[0]=x;
+			p2[1]=y;
+			System.out.println("p2 "+x+" "+y);
 	}
+			player=!player;
 	return true;
 	}
 	
 	public boolean move(int x, int y) {
+		System.out.println("player "+player);
 		int px, py, p2x, p2y;
 		if(player){
 			px=p1[0];
@@ -152,13 +157,18 @@ public class QuorModel {
 			p2x=p1[0];
 			p2y=p1[1];
 		}
+		//code for jumping the other player, checks if players are next to eachother and then calls moveCheck
 	if((Math.abs(px-p2x)==1 && py==p2y) || (Math.abs(py-p2y)==1 && px==p2x)){
-		px=p2x;
-			py=p2y;
-		moveCheck(x, y, px, py);
+		
+			if((Math.abs(p2x-x)==1 && p2y==y)|| (Math.abs(p2y-y)==1 && p2x==x)){
+		return moveCheck(x, y, p2x, p2y);
 		}
-	if((Math.abs(px-x)==1 && py==y)|| (Math.abs(py-y)==1 && px==x)){
-		moveCheck(x, y, px, py);
+	}
+	//code for a regular non jump move
+	System.out.println(px);
+	System.out.println(x);
+	if((Math.abs(px-x)==1 && py==y) || (Math.abs(py-y)==1 && px==x)){
+		return moveCheck(x, y, px, py);
 	}
 	return false;
 	}
@@ -170,6 +180,22 @@ public class QuorModel {
 	  public void removePropertyChangeListener(PropertyChangeListener listener) {
 	        this.pcs.removePropertyChangeListener(listener);
 	    }
+	  
+	  public int getp1X() {
+		  return p1[0];
+	  }
+	  
+	  public int getp1Y() {
+		  return p1[1];
+	  }
+	  
+	  public int getp2X() {
+		  return p2[0];
+	  }
+	  
+	  public int getp2Y() {
+		  return p2[1];
+	  }
 	  
 	public static void main(String[] args) {
 		QuorModel q = new QuorModel(4);

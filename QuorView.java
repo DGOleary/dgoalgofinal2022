@@ -36,6 +36,7 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 	public void start(Stage primaryStage) {
 		try {
 			game=new QuorModel(selection);
+			game.addPropertyChangeListener(this);
 			stage=primaryStage;
 			buttons= new Button[(selection*2)-1][(selection*2)-1];
 			output=new Label();
@@ -47,7 +48,7 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 			choices.setOnAction(this);
 			choices.setValue(selection);
 			int screenSize=(selection*50)+((selection-1)*10);
-			//makes the screen size based on barriers being 50x10 and spaces being 50x50 pixesl
+			//makes the screen size based on barriers being 50x10 and spaces being 50x50 pixels
 			scene = new Scene(root,screenSize,screenSize);
 			root.setCenter(grid);
 			root.setTop(choices);
@@ -59,15 +60,45 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 					String style="-fx-border-color: black;";
 					buttons[i][j] = new Button();
 					final int fi=i,fj=j;
-					buttons[i][j].setOnAction(new EventHandler<ActionEvent>() {
-
-					
-						public void handle(ActionEvent arg0) {
-							buttonPress(fi,fj);
-							
+					buttons[i][j].setOnAction(e -> {
+						
+							//buttonPress(fi,fj);
+						int x,y;
+						String tstyle;
+							if(fi % 2 == 0 && fj % 2 == 0){
+								if(game.player()) {
+									x=game.getp1X();
+									y=game.getp1Y();
+									tstyle="-fx-border-color: black; -fx-color: red;";
+								}else {
+									x=game.getp2X();
+									y=game.getp2Y();
+									tstyle="-fx-border-color: black; -fx-color: blue;";
+								}
+								//saves the original position to clear that square's color
+								//System.out.println("player old spot "+(x*2)+" "+(2*y));
+								if(game.move(fi/2, fj/2)) {
+									//System.out.println("move"+(fi/2)+(fj/2));
+									buttons[fi][fj].setStyle(tstyle);
+									buttons[x*2][y*2].setStyle("-fx-border-color: black;");
+								}
+								//handles the movement of the players
+							}else if((fi % 2 == 0 && fj % 2 == 1) || (fi % 2 == 1 && fj % 2 == 0)){
+								System.out.print("barrier ");
+							char d;
+								if(fi % 2 == 0){
+									d = 'r';
+									System.out.println("right");
+							}else{
+								d='d';
+								System.out.println("down");
+							}
+							//if (checkPath(i, j,d)){
+								//button(i, j) = "red";
+							//}
+							}
 						}
-					
-					});
+					);
 					int x, y;
 					if(i%2==0) {
 						y=50;
@@ -84,7 +115,7 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 					//determines what type of button it is based on it's spot in the grid
 					if(x==10||y==10) {
 						if(!(x==10&&y==10)) {
-							style+="-fx-background-color: #00ff00; ";
+							style+="-fx-background-color: green; ";
 
 						}
 					}
@@ -109,30 +140,7 @@ implements PropertyChangeListener, EventHandler<ActionEvent>, ChangeListener<Str
 			e.printStackTrace();
 		}
 	}
-	
-	public void buttonPress(int i, int j) {
-		if(i % 2 == 0 && j % 2 == 0){
-			System.out.println("move");
-			//if (move(i, j)){
-			//button(i, j) = getPlayer().color;
-		//}
-		}else if((i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)){
-			System.out.print("barrier ");
-		char d;
-			if(i % 2 == 0){
-				d = 'r';
-				System.out.println("right");
-		}else{
-			d='d';
-			System.out.println("down");
-		}
-		//if (checkPath(i, j,d)){
-			//button(i, j) = "red";
-		//}
-		}
 
-	}
-	
 	public void handle(ActionEvent arg0) {
 		selection = choices.getSelectionModel().getSelectedItem();
 		start(stage);
