@@ -97,7 +97,7 @@ public class QuorModel {
 
 		}
 		
-		if(checkPath(!player)){
+		if(checkPath(!player)&&checkPath(player)){
 			player=!player;
 			this.pcs.firePropertyChange("move", null, player);
 			//System.out.println("cut ");

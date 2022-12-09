@@ -31,6 +31,7 @@ implements PropertyChangeListener, EventHandler<ActionEvent> {
 	QuorModel game;
 	boolean won;
 	
+	@Override
 	public void start(Stage primaryStage) {
 		try {
 			createGame(primaryStage);
@@ -157,11 +158,14 @@ implements PropertyChangeListener, EventHandler<ActionEvent> {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}
+	
+	@Override
 	public void handle(ActionEvent arg0) {
 		selection = choices.getSelectionModel().getSelectedItem();
 		start(stage);
 		//resets screen when resized
 	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
