@@ -123,28 +123,31 @@ public class QuorModel {
 	}	
 	
 	if(x==0 && !player){
+		this.pcs.firePropertyChange("win", null, player);
 		return true;
-	//this.pcs.firePropertyChange("p1 win", null, true);
 	}else if(x==board.length-1 && player){
+		this.pcs.firePropertyChange("win", null, player);
 	return true;
-	//this.pcs.firePropertyChange("p2 win", null, true);
 	}
-	//this.pcs.firePropertyChange("move", null, true);
+	//checks if the players moved to a winning spot 
+	
 	if(player){
 			p1[0]=x;
 			p1[1]=y;
-			System.out.println("p1 "+x+" "+y);
+			//System.out.println("p1 "+x+" "+y);
 	}else {
 			p2[0]=x;
 			p2[1]=y;
-			System.out.println("p2 "+x+" "+y);
+			//System.out.println("p2 "+x+" "+y);
 	}
+	//moves the player
 			player=!player;
+		this.pcs.firePropertyChange("move", null, player);
 	return true;
 	}
 	
 	public boolean move(int x, int y) {
-		System.out.println("player "+player);
+		//System.out.println("player "+player);
 		int px, py, p2x, p2y;
 		if(player){
 			px=p1[0];
@@ -157,7 +160,7 @@ public class QuorModel {
 			p2x=p1[0];
 			p2y=p1[1];
 		}
-		//code for jumping the other player, checks if players are next to eachother and then calls moveCheck
+		//code for jumping the other player, checks if players are next to each other and then calls moveCheck if a valid spot is clicked
 	if((Math.abs(px-p2x)==1 && py==p2y) || (Math.abs(py-p2y)==1 && px==p2x)){
 		
 			if((Math.abs(p2x-x)==1 && p2y==y)|| (Math.abs(p2y-y)==1 && p2x==x)){
@@ -165,8 +168,8 @@ public class QuorModel {
 		}
 	}
 	//code for a regular non jump move
-	System.out.println(px);
-	System.out.println(x);
+	//System.out.println(px);
+	//System.out.println(x);
 	if((Math.abs(px-x)==1 && py==y) || (Math.abs(py-y)==1 && px==x)){
 		return moveCheck(x, y, px, py);
 	}
