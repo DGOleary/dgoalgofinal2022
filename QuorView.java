@@ -52,13 +52,13 @@ public class QuorView extends Application implements PropertyChangeListener, Eve
 	public void start(Stage primaryStage) {
 		try {
 			alert = new Alert(AlertType.NONE);
+			root = new BorderPane();
 			top = new BorderPane();
+			grid = new GridPane();
 			output = new Label();
 			clear = new Button();
 			clear.setText("Reset");
 			clear.setOnAction(this);
-			root = new BorderPane();
-			grid = new GridPane();
 			top = new BorderPane();
 			choices = new ComboBox<Integer>();
 			choices.getItems().addAll(3, 5, 7, 9, 11);
